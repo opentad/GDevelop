@@ -19,7 +19,8 @@ jobs:
         env:
           PUBLIC_URL: "."
           CI: "false"
-          NODE_OPTIONS: --max-old-space-size=4096
+          GENERATE_SOURCEMAP: "false"
+          NODE_OPTIONS: --max-old-space-size=12288
       - uses: actions/upload-pages-artifact@v3
         with:
           path: newIDE/app/build
