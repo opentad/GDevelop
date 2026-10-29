@@ -1,0 +1,32 @@
+name: Pages
+on: workflow_dispatch
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+        working-directory: newIDE/app
+      - run: npm run build
+        working-directory: newIDE/app
+        env:
+          PUBLIC_URL: "."
+          CI: "false"
+          NODE_OPTIONS: --max-old-space-size=4096
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: newIDE/app/build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
